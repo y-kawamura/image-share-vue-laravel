@@ -11,6 +11,11 @@ class RegisterApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * It should create new user
+     *
+     * @return void
+     */
     public function testShouldCreateNewUser()
     {
         $data = [
