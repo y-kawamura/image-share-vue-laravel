@@ -50,4 +50,17 @@ class LoginController extends Controller
     {
         return $user;
     }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        $request->session()->regenerate();
+
+        return response()->json();
+    }
 }
