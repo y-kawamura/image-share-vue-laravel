@@ -1952,6 +1952,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1977,7 +1984,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('auth', ['isLoggedIn', 'username'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('auth', ['logout']))
+});
 
 /***/ }),
 
@@ -38321,50 +38341,58 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-        _c("div", { staticClass: "d-flex" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c(
-            "li",
-            { staticClass: "nav-item" },
-            [
+        _vm.isLoggedIn
+          ? _c("div", { staticClass: "d-flex" }, [
+              _c("li", { staticClass: "nav-item" }, [
+                _c("span", { staticClass: "d-block p-2" }, [
+                  _vm._v(" " + _vm._s(_vm.username) + " ")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    on: { click: _vm.logout }
+                  },
+                  [_vm._v("\n          Logout\n        ")]
+                )
+              ])
+            ])
+          : _c("div", { staticClass: "d-flex" }, [
               _c(
-                "RouterLink",
-                { staticClass: "nav-link p-2", attrs: { to: "/signup" } },
-                [_vm._v("\n          SignUp\n        ")]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            { staticClass: "nav-item" },
-            [
+                "li",
+                { staticClass: "nav-item" },
+                [
+                  _c(
+                    "RouterLink",
+                    { staticClass: "nav-link p-2", attrs: { to: "/signup" } },
+                    [_vm._v("\n          SignUp\n        ")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
               _c(
-                "RouterLink",
-                { staticClass: "nav-link p-2", attrs: { to: "/login" } },
-                [_vm._v("\n          Login\n        ")]
+                "li",
+                { staticClass: "nav-item" },
+                [
+                  _c(
+                    "RouterLink",
+                    { staticClass: "nav-link p-2", attrs: { to: "/login" } },
+                    [_vm._v("\n          Login\n        ")]
+                  )
+                ],
+                1
               )
-            ],
-            1
-          )
-        ])
+            ])
       ])
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("span", { staticClass: "d-block p-2" }, [_vm._v(" username ")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -55315,7 +55343,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = {
   user: null
 };
-var getters = {};
+var getters = {
+  isLoggedIn: function isLoggedIn(state) {
+    return !!state.user;
+  },
+  username: function username(state) {
+    return state.user ? state.user.name : '';
+  }
+};
 var mutations = {
   setUser: function setUser(state, user) {
     state.user = user;
@@ -55389,7 +55424,7 @@ var actions = {
               return axios.post('/api/logout');
 
             case 3:
-              commit('serUser', null);
+              commit('setUser', null);
 
             case 4:
             case "end":

@@ -4,7 +4,14 @@ const state = {
   user: null
 };
 
-const getters = {};
+const getters = {
+  isLoggedIn(state) {
+    return !!state.user;
+  },
+  username(state) {
+    return state.user ? state.user.name : '';
+  }
+};
 
 const mutations = {
   setUser(state, user) {
@@ -28,7 +35,7 @@ const actions = {
   },
   async logout({ commit }) {
     await axios.post('/api/logout');
-    commit('serUser', null);
+    commit('setUser', null);
   }
 };
 

@@ -4,10 +4,19 @@
       ImageShare
     </RouterLink>
     <ul class="navbar-nav ml-auto">
-      <div class="d-flex">
+      <!-- logged in -->
+      <div v-if="isLoggedIn" class="d-flex">
         <li class="nav-item">
-          <span class="d-block p-2"> username </span>
+          <span class="d-block p-2"> {{ username }} </span>
         </li>
+        <li class="nav-item">
+          <button @click="logout" class="btn btn-outline-secondary">
+            Logout
+          </button>
+        </li>
+      </div>
+      <!-- not logged in -->
+      <div v-else class="d-flex">
         <li class="nav-item">
           <RouterLink class="nav-link p-2" to="/signup">
             SignUp
@@ -24,7 +33,16 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters('auth', ['isLoggedIn', 'username'])
+  },
+  methods: {
+    ...mapActions('auth', ['logout'])
+  }
+};
 </script>
 
 <style></style>
