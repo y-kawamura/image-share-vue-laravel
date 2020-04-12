@@ -1,7 +1,7 @@
 <template>
   <div class="p-5">
     <h1>Login</h1>
-    <form @submit.prevent="login">
+    <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">Email address</label>
         <input
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -36,8 +38,10 @@ export default {
     };
   },
   methods: {
-    login() {
-      console.log(this.user);
+    ...mapActions('auth', ['login']),
+    async onSubmit() {
+      await this.login(this.user);
+      this.$router.push('/');
     }
   }
 };

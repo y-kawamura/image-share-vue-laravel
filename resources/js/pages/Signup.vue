@@ -1,15 +1,10 @@
 <template>
   <div class="p-5">
     <h1>Signup</h1>
-    <form @submit.prevent="signup">
+    <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <label for="username">User Name</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          v-model="user.username"
-        />
+        <label for="name">User Name</label>
+        <input type="text" class="form-control" id="name" v-model="user.name" />
       </div>
       <div class="form-group">
         <label for="email">Email address</label>
@@ -30,12 +25,12 @@
         />
       </div>
       <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
+        <label for="password_confirmation">Confirm Password</label>
         <input
           type="password"
           class="form-control"
-          id="confirmPassword"
-          v-model="user.confirmPassword"
+          id="password_confirmation"
+          v-model="user.password_confirmation"
         />
       </div>
       <button type="submit" class="btn btn-primary float-right">Sign Up</button>
@@ -44,20 +39,24 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
       user: {
-        username: '',
+        name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        password_confirmation: ''
       }
     };
   },
   methods: {
-    signup() {
-      console.log(this.user);
+    ...mapActions('auth', ['signup']),
+    async onSubmit() {
+      await this.signup(this.user);
+      this.$router.push('/');
     }
   }
 };
