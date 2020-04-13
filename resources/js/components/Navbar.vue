@@ -33,14 +33,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
+    ...mapState('auth', ['apiStatus']),
     ...mapGetters('auth', ['isLoggedIn', 'username'])
   },
   methods: {
-    ...mapActions('auth', ['logout'])
+    ...mapActions('auth', { authLogout: 'logout' }),
+    async logout() {
+      await this.authLogout();
+      if (this.apiStatus) {
+        this.$router.push({ name: 'Login' });
+      }
+    }
   }
 };
 </script>
