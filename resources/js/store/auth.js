@@ -1,7 +1,10 @@
 import Axios from 'axios';
 
+import { OK } from '../util';
+
 const state = {
-  user: null
+  user: null,
+  apiStatus: null
 };
 
 const getters = {
@@ -16,31 +19,67 @@ const getters = {
 const mutations = {
   setUser(state, user) {
     state.user = user;
+  },
+  setApiStatus(state, status) {
+    state.apiStatus = status;
   }
 };
 
 const actions = {
   async signup({ commit }, user) {
-    try {
-      const response = await axios.post('/api/register', user);
+    const response = await axios
+      .post('/api/register', user)
+      .catch(err => err.response || err);
+
+    setUser(response.data);
+
+    if (response.status === OK) {
+      commit('setApiStatus', true);
       commit('setUser', response.data);
-    } catch (error) {
-      console.log(error.message);
+      return;
     }
+    commit('setApiStatus', false);
+    commit('error/setCode', response.status, { root: true });
   },
   async login({ commit }, user) {
-    console.log(user);
-    const response = await axios.post('/api/login', user);
-    commit('setUser', response.data);
+    const response = await axios
+      .post('/api/login', user)
+      .catch(err => err.response || err);
+
+    if (response.status === OK) {
+      commit('setApiStatus', true);
+      commit('setUser', response.data);
+      return;
+    }
+    commit('setApiStatus', false);
+    commit('error/setCode', response.status, { root: true });
   },
   async logout({ commit }) {
-    await axios.post('/api/logout');
-    commit('setUser', null);
+    const response = await axios
+      .post('/api/logout')
+      .catch(err => err.response || err);
+
+    if (response.status === OK) {
+      commit('setApiStatus', true);
+      commit('setUser', null);
+      return;
+    }
+    commit('setApiStatus', false);
+    commit('error/setCode', response.status, { root: true });
   },
   async currentUser({ commit }) {
-    const response = await axios.get('/api/user');
-    const user = response.data || null;
-    commit('setUser', user);
+    const response = await axios
+      .get('/api/user')
+      .catch(err => err.response || err);
+
+    if (response.statis === OK) {
+      const user = response.data || null;
+      commit('setApiStatus', true);
+      commit('setUser', user);
+      return;
+    }
+    commit('setApiStatus', false);
+    commit('error/setCode', response.status, { root: true });
   }
 };
 

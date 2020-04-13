@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -37,11 +37,17 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState('auth', ['apiStatus'])
+  },
   methods: {
     ...mapActions('auth', ['login']),
     async onSubmit() {
       await this.login(this.user);
-      this.$router.push('/');
+
+      if (this.apiStatus) {
+        this.$router.push({ name: 'Home' });
+      }
     }
   }
 };

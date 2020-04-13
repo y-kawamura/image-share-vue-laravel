@@ -5,6 +5,7 @@ import store from '../store';
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
+import SystemError from '../pages/errors/SystemError.vue';
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const routes = [
         next();
       }
     }
+  },
+  {
+    path: '/500',
+    name: 'SystemError',
+    component: SystemError
   }
 ];
 
