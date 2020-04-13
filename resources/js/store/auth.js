@@ -33,9 +33,7 @@ const mutations = {
 
 const actions = {
   async signup({ commit }, user) {
-    const response = await axios
-      .post('/api/register', user)
-      .catch(err => err.response || err);
+    const response = await axios.post('/api/register', user);
 
     if (response.status === CREATED) {
       commit('setApiStatus', true);
@@ -50,9 +48,7 @@ const actions = {
     }
   },
   async login({ commit }, user) {
-    const response = await axios
-      .post('/api/login', user)
-      .catch(err => err.response || err);
+    const response = await axios.post('/api/login', user);
 
     if (response.status === OK) {
       commit('setApiStatus', true);
@@ -67,9 +63,7 @@ const actions = {
     }
   },
   async logout({ commit }) {
-    const response = await axios
-      .post('/api/logout')
-      .catch(err => err.response || err);
+    const response = await axios.post('/api/logout');
 
     if (response.status === OK) {
       commit('setApiStatus', true);
@@ -80,9 +74,7 @@ const actions = {
     commit('error/setCode', response.status, { root: true });
   },
   async currentUser({ commit }) {
-    const response = await axios
-      .get('/api/user')
-      .catch(err => err.response || err);
+    const response = await axios.get('/api/user');
 
     if (response.status === OK) {
       const user = response.data || null;

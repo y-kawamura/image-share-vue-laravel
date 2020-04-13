@@ -55240,6 +55240,11 @@ window.axios.interceptors.request.use(function (config) {
   config.headers['X-XSRF-TOKEN'] = Object(_util__WEBPACK_IMPORTED_MODULE_0__["getCookie"])('XSRF-TOKEN');
   return config;
 });
+window.axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  return error.response || error;
+});
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -55699,9 +55704,7 @@ var actions = {
             case 0:
               commit = _ref.commit;
               _context.next = 3;
-              return axios.post('/api/register', user)["catch"](function (err) {
-                return err.response || err;
-              });
+              return axios.post('/api/register', user);
 
             case 3:
               response = _context.sent;
@@ -55743,9 +55746,7 @@ var actions = {
             case 0:
               commit = _ref2.commit;
               _context2.next = 3;
-              return axios.post('/api/login', user)["catch"](function (err) {
-                return err.response || err;
-              });
+              return axios.post('/api/login', user);
 
             case 3:
               response = _context2.sent;
@@ -55787,9 +55788,7 @@ var actions = {
             case 0:
               commit = _ref3.commit;
               _context3.next = 3;
-              return axios.post('/api/logout')["catch"](function (err) {
-                return err.response || err;
-              });
+              return axios.post('/api/logout');
 
             case 3:
               response = _context3.sent;
@@ -55826,14 +55825,12 @@ var actions = {
             case 0:
               commit = _ref4.commit;
               _context4.next = 3;
-              return axios.get('/api/user')["catch"](function (err) {
-                return err.response || err;
-              });
+              return axios.get('/api/user');
 
             case 3:
               response = _context4.sent;
 
-              if (!(response.statis === _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
                 _context4.next = 9;
                 break;
               }
