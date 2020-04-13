@@ -1,6 +1,37 @@
 <template>
   <div class="p-5">
     <h1>Signup</h1>
+    <!-- error message -->
+    <div v-if="signupErrorMessages" class="alert alert-danger">
+      <div v-if="signupErrorMessages.name">
+        <p
+          class="p-0 m-0"
+          v-for="message in signupErrorMessages.name"
+          :key="message"
+        >
+          {{ message }}
+        </p>
+      </div>
+      <div v-if="signupErrorMessages.email">
+        <p
+          class="p-0 m-0"
+          v-for="message in signupErrorMessages.email"
+          :key="message"
+        >
+          {{ message }}
+        </p>
+      </div>
+      <div v-if="signupErrorMessages.password">
+        <p
+          class="p-0 m-0"
+          v-for="message in signupErrorMessages.password"
+          :key="message"
+        >
+          {{ message }}
+        </p>
+      </div>
+    </div>
+
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="name">User Name</label>
@@ -39,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -52,12 +83,20 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState('auth', ['apiStatus', 'signupErrorMessages'])
+  },
   methods: {
-    ...mapActions('auth', ['signup']),
+    ...mapActions('auth', ['signup', 'clearErrorMessages']),
     async onSubmit() {
       await this.signup(this.user);
-      this.$router.push('/');
+      if (this.apiStatus) {
+        this.$router.push({ name: 'Home' });
+      }
     }
+  },
+  created() {
+    this.clearErrorMessages();
   }
 };
 </script>

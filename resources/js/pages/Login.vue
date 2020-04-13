@@ -1,6 +1,27 @@
 <template>
   <div class="p-5">
     <h1>Login</h1>
+    <!-- error message -->
+    <div v-if="loginErrorMessages" class="alert alert-danger">
+      <div v-if="loginErrorMessages.email">
+        <p
+          class="p-0 m-0"
+          v-for="message in loginErrorMessages.email"
+          :key="message"
+        >
+          {{ message }}
+        </p>
+      </div>
+      <div v-if="loginErrorMessages.password">
+        <p
+          class="p-0 m-0"
+          v-for="message in loginErrorMessages.password"
+          :key="message"
+        >
+          {{ message }}
+        </p>
+      </div>
+    </div>
     <form @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="email">Email address</label>
@@ -38,10 +59,10 @@ export default {
     };
   },
   computed: {
-    ...mapState('auth', ['apiStatus'])
+    ...mapState('auth', ['apiStatus', 'loginErrorMessages'])
   },
   methods: {
-    ...mapActions('auth', ['login']),
+    ...mapActions('auth', ['login', 'clearErrorMessages']),
     async onSubmit() {
       await this.login(this.user);
 
@@ -49,6 +70,9 @@ export default {
         this.$router.push({ name: 'Home' });
       }
     }
+  },
+  created() {
+    this.clearErrorMessages();
   }
 };
 </script>

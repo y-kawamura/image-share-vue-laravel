@@ -1,10 +1,10 @@
-import Axios from 'axios';
-
-import { OK } from '../util';
+import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
 
 const state = {
   user: null,
-  apiStatus: null
+  apiStatus: null,
+  loginErrorMessages: null,
+  signupErrorMessages: null
 };
 
 const getters = {
@@ -22,6 +22,12 @@ const mutations = {
   },
   setApiStatus(state, status) {
     state.apiStatus = status;
+  },
+  setLoginErrorMessages(state, messages) {
+    state.loginErrorMessages = messages;
+  },
+  setSignupErrorMessages(state, messages) {
+    state.signupErrorMessages = messages;
   }
 };
 
@@ -31,15 +37,17 @@ const actions = {
       .post('/api/register', user)
       .catch(err => err.response || err);
 
-    setUser(response.data);
-
-    if (response.status === OK) {
+    if (response.status === CREATED) {
       commit('setApiStatus', true);
       commit('setUser', response.data);
       return;
     }
     commit('setApiStatus', false);
-    commit('error/setCode', response.status, { root: true });
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      commit('setSignupErrorMessages', response.data.errors);
+    } else {
+      commit('error/setCode', response.status, { root: true });
+    }
   },
   async login({ commit }, user) {
     const response = await axios
@@ -52,7 +60,11 @@ const actions = {
       return;
     }
     commit('setApiStatus', false);
-    commit('error/setCode', response.status, { root: true });
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      commit('setLoginErrorMessages', response.data.errors);
+    } else {
+      commit('error/setCode', response.status, { root: true });
+    }
   },
   async logout({ commit }) {
     const response = await axios
@@ -80,6 +92,10 @@ const actions = {
     }
     commit('setApiStatus', false);
     commit('error/setCode', response.status, { root: true });
+  },
+  clearErrorMessages({ commit }) {
+    commit('setLoginErrorMessages', null);
+    commit('setSignupErrorMessages', null);
   }
 };
 

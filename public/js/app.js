@@ -2079,6 +2079,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2089,8 +2110,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('auth', ['apiStatus'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('auth', ['login']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('auth', ['apiStatus', 'loginErrorMessages'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('auth', ['login', 'clearErrorMessages']), {
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -2117,7 +2138,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee);
       }))();
     }
-  })
+  }),
+  created: function created() {
+    this.clearErrorMessages();
+  }
 });
 
 /***/ }),
@@ -2186,6 +2210,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2198,7 +2253,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('auth', ['signup']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('auth', ['apiStatus', 'signupErrorMessages'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('auth', ['signup', 'clearErrorMessages']), {
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -2211,7 +2267,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return _this.signup(_this.user);
 
               case 2:
-                _this.$router.push('/');
+                if (_this.apiStatus) {
+                  _this.$router.push({
+                    name: 'Home'
+                  });
+                }
 
               case 3:
               case "end":
@@ -2221,7 +2281,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee);
       }))();
     }
-  })
+  }),
+  created: function created() {
+    this.clearErrorMessages();
+  }
 });
 
 /***/ }),
@@ -38497,6 +38560,34 @@ var render = function() {
   return _c("div", { staticClass: "p-5" }, [
     _c("h1", [_vm._v("Login")]),
     _vm._v(" "),
+    _vm.loginErrorMessages
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _vm.loginErrorMessages.email
+            ? _c(
+                "div",
+                _vm._l(_vm.loginErrorMessages.email, function(message) {
+                  return _c("p", { key: message, staticClass: "p-0 m-0" }, [
+                    _vm._v("\n        " + _vm._s(message) + "\n      ")
+                  ])
+                }),
+                0
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.loginErrorMessages.password
+            ? _c(
+                "div",
+                _vm._l(_vm.loginErrorMessages.password, function(message) {
+                  return _c("p", { key: message, staticClass: "p-0 m-0" }, [
+                    _vm._v("\n        " + _vm._s(message) + "\n      ")
+                  ])
+                }),
+                0
+              )
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _c(
       "form",
       {
@@ -38596,6 +38687,46 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "p-5" }, [
     _c("h1", [_vm._v("Signup")]),
+    _vm._v(" "),
+    _vm.signupErrorMessages
+      ? _c("div", { staticClass: "alert alert-danger" }, [
+          _vm.signupErrorMessages.name
+            ? _c(
+                "div",
+                _vm._l(_vm.signupErrorMessages.name, function(message) {
+                  return _c("p", { key: message, staticClass: "p-0 m-0" }, [
+                    _vm._v("\n        " + _vm._s(message) + "\n      ")
+                  ])
+                }),
+                0
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.signupErrorMessages.email
+            ? _c(
+                "div",
+                _vm._l(_vm.signupErrorMessages.email, function(message) {
+                  return _c("p", { key: message, staticClass: "p-0 m-0" }, [
+                    _vm._v("\n        " + _vm._s(message) + "\n      ")
+                  ])
+                }),
+                0
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.signupErrorMessages.password
+            ? _c(
+                "div",
+                _vm._l(_vm.signupErrorMessages.password, function(message) {
+                  return _c("p", { key: message, staticClass: "p-0 m-0" }, [
+                    _vm._v("\n        " + _vm._s(message) + "\n      ")
+                  ])
+                }),
+                0
+              )
+            : _vm._e()
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c(
       "form",
@@ -55522,9 +55653,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -55532,10 +55661,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
-
 var state = {
   user: null,
-  apiStatus: null
+  apiStatus: null,
+  loginErrorMessages: null,
+  signupErrorMessages: null
 };
 var getters = {
   isLoggedIn: function isLoggedIn(state) {
@@ -55551,6 +55681,12 @@ var mutations = {
   },
   setApiStatus: function setApiStatus(state, status) {
     state.apiStatus = status;
+  },
+  setLoginErrorMessages: function setLoginErrorMessages(state, messages) {
+    state.loginErrorMessages = messages;
+  },
+  setSignupErrorMessages: function setSignupErrorMessages(state, messages) {
+    state.signupErrorMessages = messages;
   }
 };
 var actions = {
@@ -55569,10 +55705,9 @@ var actions = {
 
             case 3:
               response = _context.sent;
-              setUser(response.data);
 
-              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
-                _context.next = 9;
+              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_1__["CREATED"])) {
+                _context.next = 8;
                 break;
               }
 
@@ -55580,13 +55715,18 @@ var actions = {
               commit('setUser', response.data);
               return _context.abrupt("return");
 
-            case 9:
+            case 8:
               commit('setApiStatus', false);
-              commit('error/setCode', response.status, {
-                root: true
-              });
 
-            case 11:
+              if (response.status === _util__WEBPACK_IMPORTED_MODULE_1__["UNPROCESSABLE_ENTITY"]) {
+                commit('setSignupErrorMessages', response.data.errors);
+              } else {
+                commit('error/setCode', response.status, {
+                  root: true
+                });
+              }
+
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -55610,7 +55750,7 @@ var actions = {
             case 3:
               response = _context2.sent;
 
-              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
                 _context2.next = 8;
                 break;
               }
@@ -55621,9 +55761,14 @@ var actions = {
 
             case 8:
               commit('setApiStatus', false);
-              commit('error/setCode', response.status, {
-                root: true
-              });
+
+              if (response.status === _util__WEBPACK_IMPORTED_MODULE_1__["UNPROCESSABLE_ENTITY"]) {
+                commit('setLoginErrorMessages', response.data.errors);
+              } else {
+                commit('error/setCode', response.status, {
+                  root: true
+                });
+              }
 
             case 10:
             case "end":
@@ -55649,7 +55794,7 @@ var actions = {
             case 3:
               response = _context3.sent;
 
-              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+              if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
                 _context3.next = 8;
                 break;
               }
@@ -55688,7 +55833,7 @@ var actions = {
             case 3:
               response = _context4.sent;
 
-              if (!(response.statis === _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
+              if (!(response.statis === _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
                 _context4.next = 9;
                 break;
               }
@@ -55711,6 +55856,11 @@ var actions = {
         }
       }, _callee4);
     }))();
+  },
+  clearErrorMessages: function clearErrorMessages(_ref5) {
+    var commit = _ref5.commit;
+    commit('setLoginErrorMessages', null);
+    commit('setSignupErrorMessages', null);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -55788,13 +55938,14 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 /*!******************************!*\
   !*** ./resources/js/util.js ***!
   \******************************/
-/*! exports provided: OK, CREATED, INTERNAL_SERVER_ERROR, getCookie */
+/*! exports provided: OK, CREATED, UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR, getCookie */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OK", function() { return OK; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CREATED", function() { return CREATED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UNPROCESSABLE_ENTITY", function() { return UNPROCESSABLE_ENTITY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "INTERNAL_SERVER_ERROR", function() { return INTERNAL_SERVER_ERROR; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCookie", function() { return getCookie; });
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -55811,6 +55962,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var OK = 200;
 var CREATED = 201;
+var UNPROCESSABLE_ENTITY = 422;
 var INTERNAL_SERVER_ERROR = 500;
 function getCookie(searchKey) {
   if (typeof searchKey === 'undefined') {
