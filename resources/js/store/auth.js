@@ -84,7 +84,7 @@ const actions = {
       .get('/api/user')
       .catch(err => err.response || err);
 
-    if (response.statis === OK) {
+    if (response.status === OK) {
       const user = response.data || null;
       commit('setApiStatus', true);
       commit('setUser', user);
