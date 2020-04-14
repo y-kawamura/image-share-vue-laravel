@@ -55643,7 +55643,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_Home_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../pages/Home.vue */ "./resources/js/pages/Home.vue");
 /* harmony import */ var _pages_Login_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/Login.vue */ "./resources/js/pages/Login.vue");
 /* harmony import */ var _pages_Signup_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../pages/Signup.vue */ "./resources/js/pages/Signup.vue");
-/* harmony import */ var _pages_errors_SystemError_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../pages/errors/SystemError.vue */ "./resources/js/pages/errors/SystemError.vue");
+/* harmony import */ var _pages_errors_SystemError_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../pages/errors/SystemError.vue */ "./resources/js/pages/errors/SystemError.vue");
 
 
 
@@ -55674,7 +55674,7 @@ var routes = [{
 }, {
   path: '/500',
   name: 'SystemError',
-  component: _pages_errors_SystemError_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+  component: _pages_errors_SystemError_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
