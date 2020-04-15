@@ -2169,6 +2169,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2176,7 +2183,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       preview: '',
       photo: null,
-      errors: null
+      errors: null,
+      loading: false
     };
   },
   props: ['showForm'],
@@ -2219,23 +2227,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 formData = new FormData();
                 formData.append('photo', _this2.photo);
-                _context.next = 4;
+                _this2.loading = true;
+                _context.next = 5;
                 return axios.post('/api/photos', formData);
 
-              case 4:
+              case 5:
                 response = _context.sent;
 
                 if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"])) {
-                  _context.next = 8;
+                  _context.next = 9;
                   break;
                 }
 
                 _this2.errors = response.data.errors;
                 return _context.abrupt("return");
 
-              case 8:
-                _this2.reset();
-
+              case 9:
                 _this2.$emit('close'); // transition to error page
 
 
@@ -2271,6 +2278,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (value) {
         this.reset();
         this.errors = null;
+        this.loading = false;
       }
     }
   }
@@ -39583,7 +39591,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _vm.preview
-                  ? _c("output", { staticClass: "d-block mb-2" }, [
+                  ? _c("output", { staticClass: "d-block mb-4" }, [
                       _c("img", {
                         staticClass: "w-100",
                         attrs: { src: _vm.preview, alt: "image preview" }
@@ -39594,7 +39602,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-outline-secondary",
+                    staticClass: "btn btn-outline-secondary w-100 mb-2",
                     on: {
                       click: function($event) {
                         $event.preventDefault()
@@ -39607,8 +39615,26 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "button",
-                  { staticClass: "btn btn-success", attrs: { type: "submit" } },
-                  [_vm._v("\n            Submit\n          ")]
+                  {
+                    staticClass: "btn btn-success w-100",
+                    attrs: { type: "submit" }
+                  },
+                  [
+                    _vm.loading
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "spinner-border spinner-border-sm",
+                            attrs: { role: "status" }
+                          },
+                          [
+                            _c("span", { staticClass: "sr-only" }, [
+                              _vm._v("Loading...")
+                            ])
+                          ]
+                        )
+                      : _c("span", [_vm._v("Submit")])
+                  ]
                 )
               ]
             )

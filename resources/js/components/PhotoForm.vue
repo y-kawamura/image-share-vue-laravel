@@ -21,17 +21,24 @@
                 @change="onFileChange"
               />
             </div>
-            <output v-if="preview" class="d-block mb-2">
+            <output v-if="preview" class="d-block mb-4">
               <img class="w-100" :src="preview" alt="image preview" />
             </output>
             <button
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-secondary w-100 mb-2"
               @click.prevent="$emit('close')"
             >
               Cancel
             </button>
-            <button type="submit" class="btn btn-success">
-              Submit
+            <button type="submit" class="btn btn-success w-100">
+              <div
+                v-if="loading"
+                class="spinner-border spinner-border-sm"
+                role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+              <span v-else>Submit</span>
             </button>
           </form>
         </div>
@@ -49,7 +56,8 @@ export default {
     return {
       preview: '',
       photo: null,
-      errors: null
+      errors: null,
+      loading: false
     };
   },
   props: ['showForm'],
@@ -82,6 +90,8 @@ export default {
       const formData = new FormData();
       formData.append('photo', this.photo);
 
+      this.loading = true;
+
       const response = await axios.post('/api/photos', formData);
 
       if (response.status === UNPROCESSABLE_ENTITY) {
@@ -89,7 +99,6 @@ export default {
         return;
       }
 
-      this.reset();
       this.$emit('close');
 
       // transition to error page
@@ -110,6 +119,7 @@ export default {
       if (value) {
         this.reset();
         this.errors = null;
+        this.loading = false;
       }
     }
   }
