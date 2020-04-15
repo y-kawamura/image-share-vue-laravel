@@ -63,6 +63,7 @@ export default {
   props: ['showForm'],
   methods: {
     ...mapActions('error', ['setCode']),
+    ...mapActions('message', ['setContent']),
     reset() {
       this.preview = '';
       this.photo = null;
@@ -106,6 +107,11 @@ export default {
         this.setCode(response.status);
         return;
       }
+
+      // push message
+      this.setContent({
+        content: 'Photo posted'
+      });
 
       // redirect to photo detail page
       this.$router.push({

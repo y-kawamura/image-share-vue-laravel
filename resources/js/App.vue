@@ -5,6 +5,7 @@
     </header>
     <main>
       <div class="container">
+        <Message />
         <RouterView />
       </div>
     </main>
@@ -15,10 +16,12 @@
 import { mapState, mapActions } from 'vuex';
 import { INTERNAL_SERVER_ERROR } from './util';
 import Navbar from './components/Navbar.vue';
+import Message from './components/Message.vue';
 
 export default {
   components: {
-    Navbar
+    Navbar,
+    Message
   },
   computed: {
     ...mapState('error', ['code'])
