@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <nav class="navbar navbar-expand navbar-light bg-light">
     <RouterLink class="navbar-brand" to="/">
       ImageShare
     </RouterLink>

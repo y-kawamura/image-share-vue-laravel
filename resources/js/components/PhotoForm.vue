@@ -99,11 +99,16 @@ export default {
       }
 
       // redirect to photo detail page
+      this.$router.push({
+        name: 'PhotoDetail',
+        params: { id: response.data.id }
+      });
     }
   },
   watch: {
     showForm(value) {
       if (value) {
+        this.reset();
         this.errors = null;
       }
     }

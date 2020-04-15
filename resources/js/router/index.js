@@ -5,6 +5,7 @@ import store from '../store';
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
+import PhotoDetail from '../pages/PhotoDetail.vue';
 import SystemError from '../pages/errors/SystemError.vue';
 
 Vue.use(VueRouter);
@@ -14,6 +15,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/photos/:id',
+    name: 'PhotoDetail',
+    component: PhotoDetail,
+    props: true
   },
   {
     path: '/signup',
