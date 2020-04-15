@@ -2113,12 +2113,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2149,14 +2157,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       preview: '',
-      photo: null
+      photo: null,
+      errors: null
     };
   },
-  methods: {
+  props: ['showForm'],
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('error', ['setCode']), {
     reset: function reset() {
       this.preview = '';
       this.photo = null;
@@ -2201,17 +2225,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 response = _context.sent;
 
+                if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"])) {
+                  _context.next = 8;
+                  break;
+                }
+
+                _this2.errors = response.data.errors;
+                return _context.abrupt("return");
+
+              case 8:
                 _this2.reset();
 
-                _this2.$emit('close');
+                _this2.$emit('close'); // transition to error page
 
-              case 7:
+
+                if (!(response.status != _util__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
+                  _context.next = 13;
+                  break;
+                }
+
+                _this2.setCode(response.status);
+
+                return _context.abrupt("return");
+
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
       }))();
+    }
+  }),
+  watch: {
+    showForm: function showForm(value) {
+      if (value) {
+        this.errors = null;
+      }
     }
   }
 });
@@ -7039,7 +7089,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.modal-mask[data-v-516c053b] {\n  position: fixed;\n  z-index: 1000;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n  transition: opacity 0.3s ease;\n}\n.modal-wrapper[data-v-516c053b] {\n  display: table-cell;\n  vertical-align: middle;\n}\n.modal-container[data-v-516c053b] {\n  width: 80%;\n  max-width: 600px;\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #fff;\n  border-radius: 2px;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n  transition: all 0.3s ease;\n}\n.modal-enter[data-v-516c053b] {\n  opacity: 0;\n}\n.modal-leave-active[data-v-516c053b] {\n  opacity: 0;\n}\n.modal-enter .modal-container[data-v-516c053b],\n.modal-leave-active .modal-container[data-v-516c053b] {\n  transform: scale(1.1);\n}\n", ""]);
+exports.push([module.i, "\n.modal-mask[data-v-516c053b] {\n  position: fixed;\n  z-index: 1000;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5);\n  display: table;\n}\n.modal-wrapper[data-v-516c053b] {\n  display: table-cell;\n  vertical-align: middle;\n}\n.modal-container[data-v-516c053b] {\n  width: 80%;\n  max-width: 600px;\n  margin: 0px auto;\n  padding: 20px 30px;\n  background-color: #fff;\n  border-radius: 2px;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n}\n\n/** MODAL ANIMATION */\n.modal-enter[data-v-516c053b] {\n  opacity: 0;\n  transform: scale(1.1);\n}\n.modal-leave-to[data-v-516c053b] {\n  opacity: 0;\n  transform: scale(1.1);\n}\n.modal-enter-active[data-v-516c053b],\n.modal-leave-active[data-v-516c053b] {\n  transition: all 0.3s ease;\n}\n", ""]);
 
 // exports
 
@@ -39316,14 +39366,7 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c("PhotoForm", {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.isShowForm,
-                          expression: "isShowForm"
-                        }
-                      ],
+                      attrs: { showForm: _vm.isShowForm },
                       on: {
                         close: function($event) {
                           _vm.isShowForm = false
@@ -39451,62 +39494,101 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "modal" } }, [
-    _c("div", { staticClass: "modal-mask" }, [
-      _c("div", { staticClass: "modal-wrapper" }, [
-        _c("div", { staticClass: "modal-container" }, [
-          _c("h2", { staticClass: "mb-4" }, [_vm._v("Submit a photo")]),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.onSubmit($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "form-group" }, [
-                _c("input", {
-                  staticClass: "form-control-file",
-                  attrs: { type: "file" },
-                  on: { change: _vm.onFileChange }
-                })
-              ]),
-              _vm._v(" "),
-              _vm.preview
-                ? _c("output", { staticClass: "d-block mb-2" }, [
-                    _c("img", {
-                      staticClass: "w-100",
-                      attrs: { src: _vm.preview, alt: "image preview" }
-                    })
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-secondary",
-                  on: {
-                    click: function($event) {
-                      return _vm.$emit("close")
-                    }
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.showForm,
+            expression: "showForm"
+          }
+        ],
+        staticClass: "modal-mask"
+      },
+      [
+        _c("div", { staticClass: "modal-wrapper" }, [
+          _c("div", { staticClass: "modal-container" }, [
+            _c("h2", { staticClass: "mb-4" }, [_vm._v("Submit a photo")]),
+            _vm._v(" "),
+            _vm.errors
+              ? _c("div", { staticClass: "alert alert-danger" }, [
+                  _vm.errors.photo
+                    ? _c(
+                        "div",
+                        _vm._l(_vm.errors.photo, function(message) {
+                          return _c(
+                            "p",
+                            { key: message, staticClass: "p-0 m-0" },
+                            [
+                              _vm._v(
+                                "\n              " +
+                                  _vm._s(message) +
+                                  "\n            "
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.onSubmit($event)
                   }
-                },
-                [_vm._v("\n            Cancel\n          ")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "btn btn-success", attrs: { type: "submit" } },
-                [_vm._v("\n            Submit\n          ")]
-              )
-            ]
-          )
+                }
+              },
+              [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    staticClass: "form-control-file",
+                    attrs: { type: "file" },
+                    on: { change: _vm.onFileChange }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm.preview
+                  ? _c("output", { staticClass: "d-block mb-2" }, [
+                      _c("img", {
+                        staticClass: "w-100",
+                        attrs: { src: _vm.preview, alt: "image preview" }
+                      })
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.$emit("close")
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Cancel\n          ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-success", attrs: { type: "submit" } },
+                  [_vm._v("\n            Submit\n          ")]
+                )
+              ]
+            )
+          ])
         ])
-      ])
-    ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []

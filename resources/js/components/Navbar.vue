@@ -21,7 +21,7 @@
           <button @click="isShowForm = true" class="btn btn-outline-secondary">
             Submit a photo
           </button>
-          <PhotoForm v-show="isShowForm" @close="isShowForm = false" />
+          <PhotoForm @close="isShowForm = false" :showForm="isShowForm" />
         </li>
         <li class="nav-item dropdown">
           <a

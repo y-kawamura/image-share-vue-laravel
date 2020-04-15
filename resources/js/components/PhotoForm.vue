@@ -1,9 +1,18 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
+    <div v-show="showForm" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
           <h2 class="mb-4">Submit a photo</h2>
+          <!-- error message -->
+          <div v-if="errors" class="alert alert-danger">
+            <div v-if="errors.photo">
+              <p class="p-0 m-0" v-for="message in errors.photo" :key="message">
+                {{ message }}
+              </p>
+            </div>
+          </div>
+          <!-- form -->
           <form @submit.prevent="onSubmit">
             <div class="form-group">
               <input
@@ -15,7 +24,10 @@
             <output v-if="preview" class="d-block mb-2">
               <img class="w-100" :src="preview" alt="image preview" />
             </output>
-            <button class="btn btn-outline-secondary" @click="$emit('close')">
+            <button
+              class="btn btn-outline-secondary"
+              @click.prevent="$emit('close')"
+            >
               Cancel
             </button>
             <button type="submit" class="btn btn-success">
@@ -29,14 +41,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import { CREATED, UNPROCESSABLE_ENTITY } from '../util';
+
 export default {
   data() {
     return {
       preview: '',
-      photo: null
+      photo: null,
+      errors: null
     };
   },
+  props: ['showForm'],
   methods: {
+    ...mapActions('error', ['setCode']),
     reset() {
       this.preview = '';
       this.photo = null;
@@ -66,8 +84,28 @@ export default {
 
       const response = await axios.post('/api/photos', formData);
 
+      if (response.status === UNPROCESSABLE_ENTITY) {
+        this.errors = response.data.errors;
+        return;
+      }
+
       this.reset();
       this.$emit('close');
+
+      // transition to error page
+      if (response.status != CREATED) {
+        this.setCode(response.status);
+        return;
+      }
+
+      // redirect to photo detail page
+    }
+  },
+  watch: {
+    showForm(value) {
+      if (value) {
+        this.errors = null;
+      }
     }
   }
 };
@@ -83,7 +121,6 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -99,19 +136,21 @@ export default {
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
 }
 
+/** MODAL ANIMATION */
 .modal-enter {
   opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
   transform: scale(1.1);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s ease;
 }
 </style>
