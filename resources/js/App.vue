@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <header class="py-2">
       <Navbar />
     </header>
     <main>

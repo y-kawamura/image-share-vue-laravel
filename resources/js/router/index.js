@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import store from '../store';
-import Home from '../pages/Home.vue';
+import PhotoList from '../pages/PhotoList.vue';
 import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
 import PhotoDetail from '../pages/PhotoDetail.vue';
@@ -13,8 +13,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'PhotoList',
+    component: PhotoList
   },
   {
     path: '/photos/:id',
