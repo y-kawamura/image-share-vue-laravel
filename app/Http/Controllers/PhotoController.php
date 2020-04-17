@@ -13,7 +13,7 @@ class PhotoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show', 'downlaod']);
+        $this->middleware('auth')->except(['index', 'show', 'download']);
     }
 
     /**
