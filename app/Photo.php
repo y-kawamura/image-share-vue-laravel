@@ -15,7 +15,7 @@ class Photo extends Model
     ];
 
     protected $visible = [
-        'id', 'owner', 'url'
+        'id', 'owner', 'url', 'comments',
     ];
 
     protected $perPage = 8;
@@ -59,5 +59,14 @@ class Photo extends Model
     public function owner()
     {
         return $this->belongsTo('App\User', 'user_id', 'id', 'users');
+    }
+
+    /**
+     * The Relationship for comment table
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Comment')->orderBy('id', 'desc');
     }
 }
