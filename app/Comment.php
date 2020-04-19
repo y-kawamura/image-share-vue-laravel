@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $visible = [
-        'author', 'content',
+        'author', 'content', self::CREATED_AT
     ];
 
     /**

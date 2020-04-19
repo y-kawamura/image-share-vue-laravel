@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div v-if="photo" class="col-12 col-md-6">
+  <div v-if="photo" class="row">
+    <div class="col-12 col-md-6">
       <img
         class="w-100"
         :src="photo.url"
@@ -14,22 +14,50 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6">
+    <!-- Comments -->
+    <div class="col-12 col-md-6 mt-4 mt-md-0">
       <h4>Comments</h4>
+      <div v-if="photo.comments.length > 0">
+        <div
+          v-for="comment in photo.comments"
+          :key="comment.id"
+          class="list-group"
+        >
+          <comment-card :comment="comment" class="list-group-item mb-1" />
+        </div>
+      </div>
+      <div v-else>
+        <p>No comments</p>
+      </div>
+      <form v-if="isLoggedIn" @submit.prevent="onSubmit" class="mt-2">
+        <div class="form-group">
+          <textarea
+            id="comment"
+            v-model="comment"
+            class="form-control"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">
+          Submit
+        </button>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { OK } from '../util';
+import { mapActions, mapGetters } from 'vuex';
+import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
 import LikeButton from '../components/LikeButton.vue';
 import DownloadButton from '../components/DownloadButton.vue';
+import CommentCard from '../components/CommentCard.vue';
 
 export default {
   data() {
     return {
-      photo: null
+      photo: null,
+      comment: '',
+      errors: null
     };
   },
   props: {
@@ -40,7 +68,11 @@ export default {
   },
   components: {
     LikeButton,
-    DownloadButton
+    DownloadButton,
+    CommentCard
+  },
+  computed: {
+    ...mapGetters('auth', ['isLoggedIn'])
   },
   methods: {
     ...mapActions('error', ['setCode']),
@@ -53,11 +85,42 @@ export default {
       }
 
       this.photo = response.data;
+    },
+    async addComment() {
+      const response = await axios.post(
+        `/api/photo/${this.photo.id}/comments`,
+        {
+          content: this.comment
+        }
+      );
+
+      if (response.status === UNPROCESSABLE_ENTITY) {
+        this.errors = response.data.errors;
+        return;
+      }
+
+      if (response.status !== CREATED) {
+        this.setCode(response.status);
+        return;
+      }
+
+      this.photo.comments = [response.data, ...this.photo.comments];
+    },
+    async onSubmit() {
+      if (this.comment) {
+        await this.addComment();
+        this.clearInput();
+      }
+    },
+    clearInput() {
+      this.comment = '';
+      this.errors = null;
     }
   },
   watch: {
     $rotue: {
       async handler() {
+        this.clearInput();
         await this.fetchPhoto();
       },
       immediate: true

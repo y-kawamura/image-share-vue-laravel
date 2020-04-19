@@ -42,6 +42,7 @@ class PhotoDetailApiTest extends TestCase
                                 'name' => $comment->author->name,
                             ],
                             'content' => $comment->content,
+                            'created_at' => $comment->created_at,
                         ];
                     })
                     ->all(),

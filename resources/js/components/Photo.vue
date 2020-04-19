@@ -58,7 +58,7 @@ export default {
   position: absolute;
   bottom: 0;
   background-color: #eee;
-  height: 30%;
+  height: 50px;
   width: 100%;
   display: flex;
   justify-content: space-between;
