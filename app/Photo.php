@@ -5,17 +5,18 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class Photo extends Model
 {
     protected $keyType = 'string';
 
     protected $appends = [
-        'url'
+        'url', 'likes_count', 'liked_by_user'
     ];
 
     protected $visible = [
-        'id', 'owner', 'url', 'comments',
+        'id', 'owner', 'url', 'comments', 'likes_count', 'liked_by_user'
     ];
 
     protected $perPage = 8;
@@ -50,6 +51,30 @@ class Photo extends Model
     public function getUrlAttribute()
     {
         return Storage::cloud()->url($this->attributes['filename']);
+    }
+
+    /**
+     * Accessor - likes_count
+     * @return string
+     */
+    public function getLikesCountAttribute()
+    {
+        return $this->likes->count();
+    }
+
+    /**
+     * Accessor - liked_by_user
+     * @return string
+     */
+    public function getLikedByUserAttribute()
+    {
+        if (Auth::guest()) {
+            return false;
+        }
+
+        return $this->likes->contains(function ($user) {
+            return $user->id === Auth::user()->id;
+        });
     }
 
     /**
