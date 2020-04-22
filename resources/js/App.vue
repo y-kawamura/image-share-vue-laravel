@@ -14,7 +14,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { INTERNAL_SERVER_ERROR } from './util';
+import { INTERNAL_SERVER_ERROR, UNAUTHORIZED } from './util';
 import Navbar from './components/Navbar.vue';
 import Message from './components/Message.vue';
 
@@ -27,13 +27,18 @@ export default {
     ...mapState('error', ['code'])
   },
   methods: {
-    ...mapActions('error', ['setCode'])
+    ...mapActions('error', ['setCode']),
+    ...mapActions('auth', ['setUser'])
   },
   watch: {
     code: {
-      handler(val) {
+      async handler(val) {
         if (val === INTERNAL_SERVER_ERROR) {
           this.$router.push({ name: 'SystemError' });
+        } else if (val === UNAUTHORIZED) {
+          await axios.get('/api/refresh-token');
+          this.setUser(null);
+          this.$router.push({ name: 'Login' });
         }
       },
       immediate: true
