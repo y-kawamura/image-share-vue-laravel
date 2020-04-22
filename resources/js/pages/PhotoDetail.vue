@@ -9,7 +9,11 @@
       <div class="d-flex justify-content-between align-items-center px-2">
         <span>Posted by {{ photo.owner.name }}</span>
         <div>
-          <like-button :like="10" />
+          <like-button
+            :likesCount="photo.likes_count"
+            :likedByUser="photo.liked_by_user"
+            @clickLike="onClickLike"
+          />
           <download-button :id="id" />
         </div>
       </div>
@@ -46,8 +50,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { OK, CREATED, UNPROCESSABLE_ENTITY } from '../util';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import LikeButton from '../components/LikeButton.vue';
 import DownloadButton from '../components/DownloadButton.vue';
 import CommentCard from '../components/CommentCard.vue';
@@ -55,9 +58,7 @@ import CommentCard from '../components/CommentCard.vue';
 export default {
   data() {
     return {
-      photo: null,
-      comment: '',
-      errors: null
+      comment: ''
     };
   },
   props: {
@@ -72,56 +73,38 @@ export default {
     CommentCard
   },
   computed: {
+    ...mapState('photo', ['photo']),
     ...mapGetters('auth', ['isLoggedIn'])
   },
   methods: {
     ...mapActions('error', ['setCode']),
-    async fetchPhoto() {
-      const response = await axios.get(`/api/photos/${this.id}`);
-
-      if (response.status !== OK) {
-        this.setCode(response.status);
-        return;
-      }
-
-      this.photo = response.data;
-    },
-    async addComment() {
-      const response = await axios.post(
-        `/api/photo/${this.photo.id}/comments`,
-        {
-          content: this.comment
-        }
-      );
-
-      if (response.status === UNPROCESSABLE_ENTITY) {
-        this.errors = response.data.errors;
-        return;
-      }
-
-      if (response.status !== CREATED) {
-        this.setCode(response.status);
-        return;
-      }
-
-      this.photo.comments = [response.data, ...this.photo.comments];
-    },
+    ...mapActions('photo', ['fetchPhoto', 'addComment', 'like', 'unlike']),
     async onSubmit() {
       if (this.comment) {
-        await this.addComment();
+        await this.addComment({ id: this.id, content: this.comment });
         this.clearInput();
       }
     },
     clearInput() {
       this.comment = '';
-      this.errors = null;
+    },
+    onClickLike() {
+      if (!this.isLoggedIn) {
+        alert('Please login');
+        return;
+      }
+      if (this.photo.liked_by_user) {
+        this.unlike(this.photo.id);
+      } else {
+        this.like(this.photo.id);
+      }
     }
   },
   watch: {
     $rotue: {
       async handler() {
         this.clearInput();
-        await this.fetchPhoto();
+        await this.fetchPhoto(this.id);
       },
       immediate: true
     }

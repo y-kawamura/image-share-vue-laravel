@@ -2106,10 +2106,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    like: {
+    likesCount: {
       type: Number,
+      required: true
+    },
+    likedByUser: {
+      type: Boolean,
       required: true
     }
   }
@@ -2342,8 +2350,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _LikeButton_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LikeButton.vue */ "./resources/js/components/LikeButton.vue");
-/* harmony import */ var _DownloadButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DownloadButton.vue */ "./resources/js/components/DownloadButton.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _LikeButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LikeButton.vue */ "./resources/js/components/LikeButton.vue");
+/* harmony import */ var _DownloadButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DownloadButton.vue */ "./resources/js/components/DownloadButton.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2368,19 +2383,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    item: {
+    photo: {
       type: Object,
       required: true
     }
   },
   components: {
-    LikeButton: _LikeButton_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    DownloadButton: _DownloadButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  }
+    LikeButton: _LikeButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    DownloadButton: _DownloadButton_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('auth', ['isLoggedIn'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('photo', ['like', 'unlike']), {
+    onClickLike: function onClickLike() {
+      if (!this.isLoggedIn) {
+        alert('Please login');
+        return;
+      }
+
+      if (this.photo.liked_by_user) {
+        this.unlike(this.photo.id);
+      } else {
+        this.like(this.photo.id);
+      }
+    }
+  })
 });
 
 /***/ }),
@@ -2672,7 +2707,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 2:
                 if (_this.apiStatus) {
                   _this.$router.push({
-                    name: 'Home'
+                    name: 'PhotoList'
                   });
                 }
 
@@ -2704,23 +2739,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _components_LikeButton_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/LikeButton.vue */ "./resources/js/components/LikeButton.vue");
-/* harmony import */ var _components_DownloadButton_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/DownloadButton.vue */ "./resources/js/components/DownloadButton.vue");
-/* harmony import */ var _components_CommentCard_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/CommentCard.vue */ "./resources/js/components/CommentCard.vue");
+/* harmony import */ var _components_LikeButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/LikeButton.vue */ "./resources/js/components/LikeButton.vue");
+/* harmony import */ var _components_DownloadButton_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/DownloadButton.vue */ "./resources/js/components/DownloadButton.vue");
+/* harmony import */ var _components_CommentCard_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/CommentCard.vue */ "./resources/js/components/CommentCard.vue");
 
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -2779,7 +2801,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-
+//
+//
+//
+//
 
 
 
@@ -2787,9 +2812,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      photo: null,
-      comment: '',
-      errors: null
+      comment: ''
     };
   },
   props: {
@@ -2799,40 +2822,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    LikeButton: _components_LikeButton_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    DownloadButton: _components_DownloadButton_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    CommentCard: _components_CommentCard_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    LikeButton: _components_LikeButton_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    DownloadButton: _components_DownloadButton_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    CommentCard: _components_CommentCard_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('auth', ['isLoggedIn'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('error', ['setCode']), {
-    fetchPhoto: function fetchPhoto() {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('photo', ['photo']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('auth', ['isLoggedIn'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('error', ['setCode']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('photo', ['fetchPhoto', 'addComment', 'like', 'unlike']), {
+    onSubmit: function onSubmit() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios.get("/api/photos/".concat(_this.id));
-
-              case 2:
-                response = _context.sent;
-
-                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
-                  _context.next = 6;
+                if (!_this.comment) {
+                  _context.next = 4;
                   break;
                 }
 
-                _this.setCode(response.status);
+                _context.next = 3;
+                return _this.addComment({
+                  id: _this.id,
+                  content: _this.comment
+                });
 
-                return _context.abrupt("return");
+              case 3:
+                _this.clearInput();
 
-              case 6:
-                _this.photo = response.data;
-
-              case 7:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -2840,105 +2858,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee);
       }))();
     },
-    addComment: function addComment() {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return axios.post("/api/photo/".concat(_this2.photo.id, "/comments"), {
-                  content: _this2.comment
-                });
-
-              case 2:
-                response = _context2.sent;
-
-                if (!(response.status === _util__WEBPACK_IMPORTED_MODULE_2__["UNPROCESSABLE_ENTITY"])) {
-                  _context2.next = 6;
-                  break;
-                }
-
-                _this2.errors = response.data.errors;
-                return _context2.abrupt("return");
-
-              case 6:
-                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_2__["CREATED"])) {
-                  _context2.next = 9;
-                  break;
-                }
-
-                _this2.setCode(response.status);
-
-                return _context2.abrupt("return");
-
-              case 9:
-                _this2.photo.comments = [response.data].concat(_toConsumableArray(_this2.photo.comments));
-
-              case 10:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
-    },
-    onSubmit: function onSubmit() {
-      var _this3 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                if (!_this3.comment) {
-                  _context3.next = 4;
-                  break;
-                }
-
-                _context3.next = 3;
-                return _this3.addComment();
-
-              case 3:
-                _this3.clearInput();
-
-              case 4:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }))();
-    },
     clearInput: function clearInput() {
       this.comment = '';
-      this.errors = null;
+    },
+    onClickLike: function onClickLike() {
+      if (!this.isLoggedIn) {
+        alert('Please login');
+        return;
+      }
+
+      if (this.photo.liked_by_user) {
+        this.unlike(this.photo.id);
+      } else {
+        this.like(this.photo.id);
+      }
     }
   }),
   watch: {
     $rotue: {
       handler: function handler() {
-        var _this4 = this;
+        var _this2 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
             while (1) {
-              switch (_context4.prev = _context4.next) {
+              switch (_context2.prev = _context2.next) {
                 case 0:
-                  _this4.clearInput();
+                  _this2.clearInput();
 
-                  _context4.next = 3;
-                  return _this4.fetchPhoto();
+                  _context2.next = 3;
+                  return _this2.fetchPhoto(_this2.id);
 
                 case 3:
                 case "end":
-                  return _context4.stop();
+                  return _context2.stop();
               }
             }
-          }, _callee4);
+          }, _callee2);
         }))();
       },
       immediate: true
@@ -2960,9 +2916,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
-/* harmony import */ var _components_Photo_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Photo.vue */ "./resources/js/components/Photo.vue");
-/* harmony import */ var _components_Pagination_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Pagination.vue */ "./resources/js/components/Pagination.vue");
+/* harmony import */ var _components_Photo_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Photo.vue */ "./resources/js/components/Photo.vue");
+/* harmony import */ var _components_Pagination_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Pagination.vue */ "./resources/js/components/Pagination.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2999,18 +2954,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Photo: _components_Photo_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    Pagination: _components_Pagination_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
-  },
-  data: function data() {
-    return {
-      photos: [],
-      currentPage: 1,
-      lastPage: 1
-    };
+    Photo: _components_Photo_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    Pagination: _components_Pagination_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
     page: {
@@ -3018,64 +2965,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       "default": 1
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('error', ['setCode']), {
-    fetchPhotos: function fetchPhotos() {
-      var _this = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return axios.get("/api/photos/?page=".concat(_this.page));
-
-              case 2:
-                response = _context.sent;
-
-                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_2__["OK"])) {
-                  _context.next = 6;
-                  break;
-                }
-
-                _this.setCode(response.status);
-
-                return _context.abrupt("return");
-
-              case 6:
-                _this.photos = response.data.data;
-                _this.currentPage = response.data.current_page;
-                _this.lastPage = response.data.last_page;
-
-              case 9:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    }
-  }),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('photo', ['photos', 'currentPage', 'lastPage'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('photo', ['fetchPhotos'])),
   watch: {
     $route: {
       handler: function handler() {
-        var _this2 = this;
+        var _this = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
             while (1) {
-              switch (_context2.prev = _context2.next) {
+              switch (_context.prev = _context.next) {
                 case 0:
-                  _context2.next = 2;
-                  return _this2.fetchPhotos();
+                  _context.next = 2;
+                  return _this.fetchPhotos(_this.page);
 
                 case 2:
                 case "end":
-                  return _context2.stop();
+                  return _context.stop();
               }
             }
-          }, _callee2);
+          }, _callee);
         }))();
       },
       immediate: true
@@ -3208,7 +3118,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 2:
                 if (_this.apiStatus) {
                   _this.$router.push({
-                    name: 'Home'
+                    name: 'PhotoList'
                   });
                 }
 
@@ -7807,7 +7717,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.photo-like {\n  color: #626262;\n}\n.photo-like:hover,\n.photo-like:hover > div svg path {\n  color: #ed4c67;\n  fill: #ed4c67;\n}\n", ""]);
+exports.push([module.i, "\n.photo-like {\n  color: #626262;\n}\n.photo-like:focus {\n  box-shadow: none;\n}\n.liked,\n.liked > div svg path,\n.photo-like:hover,\n.photo-like:hover > div svg path {\n  color: #ed4c67;\n  fill: #ed4c67;\n}\n", ""]);
 
 // exports
 
@@ -57915,40 +57825,53 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("button", { staticClass: "btn photo-like" }, [
-    _c("div", { staticClass: "d-flex align-items-center" }, [
-      _c(
-        "svg",
-        {
-          staticStyle: {
-            "-ms-transform": "rotate(360deg)",
-            "-webkit-transform": "rotate(360deg)",
-            transform: "rotate(360deg)"
-          },
-          attrs: {
-            xmlns: "http://www.w3.org/2000/svg",
-            "xmlns:xlink": "http://www.w3.org/1999/xlink",
-            "aria-hidden": "true",
-            focusable: "false",
-            width: "1em",
-            height: "1em",
-            preserveAspectRatio: "xMidYMid meet",
-            viewBox: "0 0 512 512"
-          }
-        },
-        [
-          _c("path", {
+  return _c(
+    "button",
+    {
+      staticClass: "btn photo-like",
+      class: { liked: _vm.likedByUser },
+      on: {
+        click: function($event) {
+          $event.preventDefault()
+          return _vm.$emit("clickLike")
+        }
+      }
+    },
+    [
+      _c("div", { staticClass: "d-flex align-items-center" }, [
+        _c(
+          "svg",
+          {
+            staticStyle: {
+              "-ms-transform": "rotate(360deg)",
+              "-webkit-transform": "rotate(360deg)",
+              transform: "rotate(360deg)"
+            },
             attrs: {
-              d:
-                "M256 448l-9-6c-42.78-28.57-96.91-60.86-137-108.32c-42.25-50-62.52-101.35-62-157C48.63 114.54 98.46 64 159.08 64c48.11 0 80.1 28 96.92 48.21C272.82 92 304.81 64 352.92 64c60.62 0 110.45 50.54 111.08 112.65c.56 55.68-19.71 107-62 157c-40.09 47.49-94.22 79.78-137 108.35z",
-              fill: "#626262"
+              xmlns: "http://www.w3.org/2000/svg",
+              "xmlns:xlink": "http://www.w3.org/1999/xlink",
+              "aria-hidden": "true",
+              focusable: "false",
+              width: "1em",
+              height: "1em",
+              preserveAspectRatio: "xMidYMid meet",
+              viewBox: "0 0 512 512"
             }
-          })
-        ]
-      ),
-      _vm._v("\n    " + _vm._s(_vm.like) + "\n  ")
-    ])
-  ])
+          },
+          [
+            _c("path", {
+              attrs: {
+                d:
+                  "M256 448l-9-6c-42.78-28.57-96.91-60.86-137-108.32c-42.25-50-62.52-101.35-62-157C48.63 114.54 98.46 64 159.08 64c48.11 0 80.1 28 96.92 48.21C272.82 92 304.81 64 352.92 64c60.62 0 110.45 50.54 111.08 112.65c.56 55.68-19.71 107-62 157c-40.09 47.49-94.22 79.78-137 108.35z",
+                fill: "#626262"
+              }
+            })
+          ]
+        ),
+        _vm._v("\n    " + _vm._s(_vm.likesCount) + "\n  ")
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -58242,27 +58165,33 @@ var render = function() {
     [
       _c("img", {
         staticClass: "card-img-top",
-        attrs: { src: _vm.item.url, alt: "Photo by " + _vm.item.owner.name }
+        attrs: { src: _vm.photo.url, alt: "Photo by " + _vm.photo.owner.name }
       }),
       _vm._v(" "),
       _c(
         "RouterLink",
         {
           staticClass: "photo-overlay",
-          attrs: { to: { name: "PhotoDetail", params: { id: _vm.item.id } } }
+          attrs: { to: { name: "PhotoDetail", params: { id: _vm.photo.id } } }
         },
         [
           _c("div", { staticClass: "photo-items" }, [
             _c("span", { staticClass: "photo-user" }, [
-              _vm._v("\n        " + _vm._s(_vm.item.owner.name) + "\n      ")
+              _vm._v("\n        " + _vm._s(_vm.photo.owner.name) + "\n      ")
             ]),
             _vm._v(" "),
             _c(
               "div",
               [
-                _c("like-button", { attrs: { like: 10 } }),
+                _c("like-button", {
+                  attrs: {
+                    likesCount: _vm.photo.likes_count,
+                    likedByUser: _vm.photo.liked_by_user
+                  },
+                  on: { clickLike: _vm.onClickLike }
+                }),
                 _vm._v(" "),
-                _c("download-button", { attrs: { id: _vm.item.id } })
+                _c("download-button", { attrs: { id: _vm.photo.id } })
               ],
               1
             )
@@ -58584,7 +58513,13 @@ var render = function() {
               _c(
                 "div",
                 [
-                  _c("like-button", { attrs: { like: 10 } }),
+                  _c("like-button", {
+                    attrs: {
+                      likesCount: _vm.photo.likes_count,
+                      likedByUser: _vm.photo.liked_by_user
+                    },
+                    on: { clickLike: _vm.onClickLike }
+                  }),
                   _vm._v(" "),
                   _c("download-button", { attrs: { id: _vm.id } })
                 ],
@@ -58699,7 +58634,7 @@ var render = function() {
         return _c(
           "div",
           { key: photo.id, staticClass: "col-6 col-md-4 col-xl-3 my-3" },
-          [_c("Photo", { attrs: { item: photo } })],
+          [_c("Photo", { attrs: { photo: photo } })],
           1
         )
       }),
@@ -76632,6 +76567,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth.js");
 /* harmony import */ var _error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error */ "./resources/js/store/error.js");
 /* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./message */ "./resources/js/store/message.js");
+/* harmony import */ var _photo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./photo */ "./resources/js/store/photo.js");
+
 
 
 
@@ -76642,7 +76579,8 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     auth: _auth__WEBPACK_IMPORTED_MODULE_2__["default"],
     error: _error__WEBPACK_IMPORTED_MODULE_3__["default"],
-    message: _message__WEBPACK_IMPORTED_MODULE_4__["default"]
+    message: _message__WEBPACK_IMPORTED_MODULE_4__["default"],
+    photo: _photo__WEBPACK_IMPORTED_MODULE_5__["default"]
   }
 });
 /* harmony default export */ __webpack_exports__["default"] = (store);
@@ -76686,6 +76624,290 @@ var actions = {
       content: content,
       timeout: timeout
     });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: state,
+  mutations: mutations,
+  actions: actions
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/photo.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/photo.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util */ "./resources/js/util.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+var state = {
+  photos: null,
+  photo: null,
+  currentPage: 1,
+  lastPage: 1
+};
+var mutations = {
+  setPhotos: function setPhotos(state, photos) {
+    state.photos = photos;
+  },
+  setPhoto: function setPhoto(state, photo) {
+    state.photo = photo;
+  },
+  setComment: function setComment(state, comments) {
+    state.photo.comments = comments;
+  },
+  setCurrentPage: function setCurrentPage(state, page) {
+    state.currentPage = page;
+  },
+  setLastPage: function setLastPage(state, page) {
+    state.lastPage = page;
+  },
+  addComment: function addComment(state, comment) {
+    state.photo.comments = [comment].concat(_toConsumableArray(state.photo.comments));
+  },
+  like: function like(state, id) {
+    if (state.photos) {
+      state.photos = state.photos.map(function (photo) {
+        if (photo.id === id) {
+          photo.likes_count += 1;
+          photo.liked_by_user = true;
+        }
+
+        return photo;
+      });
+    }
+
+    if (state.photo) {
+      state.photo.likes_count += 1;
+      state.photo.liked_by_user = true;
+    }
+  },
+  unlike: function unlike(state, id) {
+    if (state.photos) {
+      state.photos = state.photos.map(function (photo) {
+        if (photo.id === id) {
+          photo.likes_count -= 1;
+          photo.liked_by_user = false;
+        }
+
+        return photo;
+      });
+    }
+
+    if (state.photo) {
+      state.photo.likes_count -= 1;
+      state.photo.liked_by_user = false;
+    }
+  }
+};
+var actions = {
+  fetchPhotos: function fetchPhotos(_ref) {
+    var _arguments = arguments;
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var commit, dispatch, page, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              commit = _ref.commit, dispatch = _ref.dispatch;
+              page = _arguments.length > 1 && _arguments[1] !== undefined ? _arguments[1] : 1;
+              _context.next = 4;
+              return axios.get("/api/photos/?page=".concat(page));
+
+            case 4:
+              response = _context.sent;
+
+              if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                _context.next = 8;
+                break;
+              }
+
+              dispatch('error/setCode', response.status, {
+                root: true
+              });
+              return _context.abrupt("return");
+
+            case 8:
+              commit('setPhotos', response.data.data);
+              commit('setCurrentPage', response.data.current_page);
+              commit('setLastPage', response.data.last_page);
+
+            case 11:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  fetchPhoto: function fetchPhoto(_ref2, id) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var commit, dispatch, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref2.commit, dispatch = _ref2.dispatch;
+              _context2.next = 3;
+              return axios.get("/api/photos/".concat(id));
+
+            case 3:
+              response = _context2.sent;
+
+              if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                _context2.next = 7;
+                break;
+              }
+
+              dispatch('error/setCode', response.status, {
+                root: true
+              });
+              return _context2.abrupt("return");
+
+            case 7:
+              commit('setPhoto', response.data);
+
+            case 8:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  },
+  addComment: function addComment(_ref3, _ref4) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var commit, id, content, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref3.commit;
+              id = _ref4.id, content = _ref4.content;
+              _context3.next = 4;
+              return axios.post("/api/photos/".concat(id, "/comments"), {
+                content: content
+              });
+
+            case 4:
+              response = _context3.sent;
+
+              if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["CREATED"])) {
+                _context3.next = 8;
+                break;
+              }
+
+              dispatch('error/setCode', response.status, {
+                root: true
+              });
+              return _context3.abrupt("return");
+
+            case 8:
+              commit('addComment', response.data);
+
+            case 9:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
+  },
+  like: function like(_ref5, id) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var commit, dispatch, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              commit = _ref5.commit, dispatch = _ref5.dispatch;
+              _context4.next = 3;
+              return axios.put("/api/photos/".concat(id, "/like"));
+
+            case 3:
+              response = _context4.sent;
+
+              if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                _context4.next = 7;
+                break;
+              }
+
+              dispatch('error/setCode', response.status, {
+                root: true
+              });
+              return _context4.abrupt("return");
+
+            case 7:
+              commit('like', response.data.photo_id);
+
+            case 8:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }))();
+  },
+  unlike: function unlike(_ref6, id) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+      var commit, dispatch, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              commit = _ref6.commit, dispatch = _ref6.dispatch;
+              _context5.next = 3;
+              return axios["delete"]("/api/photos/".concat(id, "/like"));
+
+            case 3:
+              response = _context5.sent;
+
+              if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                _context5.next = 7;
+                break;
+              }
+
+              dispatch('error/setCode', response.status, {
+                root: true
+              });
+              return _context5.abrupt("return");
+
+            case 7:
+              commit('unlike', response.data.photo_id);
+
+            case 8:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }))();
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

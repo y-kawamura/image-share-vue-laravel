@@ -1,5 +1,9 @@
 <template>
-  <button class="btn photo-like">
+  <button
+    class="btn photo-like"
+    :class="{ liked: likedByUser }"
+    @click.prevent="$emit('clickLike')"
+  >
     <div class="d-flex align-items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +21,7 @@
           fill="#626262"
         />
       </svg>
-      {{ like }}
+      {{ likesCount }}
     </div>
   </button>
 </template>
@@ -25,8 +29,12 @@
 <script>
 export default {
   props: {
-    like: {
+    likesCount: {
       type: Number,
+      required: true
+    },
+    likedByUser: {
+      type: Boolean,
       required: true
     }
   }
@@ -37,7 +45,12 @@ export default {
 .photo-like {
   color: #626262;
 }
+.photo-like:focus {
+  box-shadow: none;
+}
 
+.liked,
+.liked > div svg path,
 .photo-like:hover,
 .photo-like:hover > div svg path {
   color: #ed4c67;

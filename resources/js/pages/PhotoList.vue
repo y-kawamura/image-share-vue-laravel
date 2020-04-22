@@ -6,7 +6,7 @@
         v-for="photo in photos"
         :key="photo.id"
       >
-        <Photo :item="photo" />
+        <Photo :photo="photo" />
       </div>
     </div>
     <div class="row">
@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { OK } from '../util';
+import { mapState, mapActions } from 'vuex';
 import Photo from '../components/Photo.vue';
 import Pagination from '../components/Pagination.vue';
 
@@ -30,38 +29,22 @@ export default {
     Photo,
     Pagination
   },
-  data() {
-    return {
-      photos: [],
-      currentPage: 1,
-      lastPage: 1
-    };
-  },
   props: {
     page: {
       type: Number,
       default: 1
     }
   },
+  computed: {
+    ...mapState('photo', ['photos', 'currentPage', 'lastPage'])
+  },
   methods: {
-    ...mapActions('error', ['setCode']),
-    async fetchPhotos() {
-      const response = await axios.get(`/api/photos/?page=${this.page}`);
-
-      if (response.status !== OK) {
-        this.setCode(response.status);
-        return;
-      }
-
-      this.photos = response.data.data;
-      this.currentPage = response.data.current_page;
-      this.lastPage = response.data.last_page;
-    }
+    ...mapActions('photo', ['fetchPhotos'])
   },
   watch: {
     $route: {
       async handler() {
-        await this.fetchPhotos();
+        await this.fetchPhotos(this.page);
       },
       immediate: true
     }

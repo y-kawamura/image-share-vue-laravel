@@ -67,7 +67,7 @@ export default {
       await this.login(this.user);
 
       if (this.apiStatus) {
-        this.$router.push({ name: 'Home' });
+        this.$router.push({ name: 'PhotoList' });
       }
     }
   },

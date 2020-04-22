@@ -91,7 +91,7 @@ export default {
     async onSubmit() {
       await this.signup(this.user);
       if (this.apiStatus) {
-        this.$router.push({ name: 'Home' });
+        this.$router.push({ name: 'PhotoList' });
       }
     }
   },
