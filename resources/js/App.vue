@@ -14,7 +14,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { INTERNAL_SERVER_ERROR, UNAUTHORIZED } from './util';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED } from './util';
 import Navbar from './components/Navbar.vue';
 import Message from './components/Message.vue';
 
@@ -39,6 +39,8 @@ export default {
           await axios.get('/api/refresh-token');
           this.setUser(null);
           this.$router.push({ name: 'Login' });
+        } else if (val === NOT_FOUND) {
+          this.$router.push({ name: 'NotFound' });
         }
       },
       immediate: true

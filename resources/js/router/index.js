@@ -7,6 +7,7 @@ import Login from '../pages/Login.vue';
 import Signup from '../pages/Signup.vue';
 import PhotoDetail from '../pages/PhotoDetail.vue';
 import SystemError from '../pages/errors/SystemError.vue';
+import NotFound from '../pages/errors/NotFound.vue';
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,15 @@ const routes = [
     path: '/500',
     name: 'SystemError',
     component: SystemError
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: { name: 'NotFound' }
   }
 ];
 
